@@ -1,6 +1,9 @@
 # build stage for building .ts files
 FROM node:20-alpine as build
 
+# Install curl
+RUN apk add --no-cache curl
+
 RUN mkdir /home/app
 
 WORKDIR /home/app
@@ -16,9 +19,11 @@ RUN npm run build
 # prod stage for including only necessary files
 FROM node:20-alpine as prod
 
+# Install curl
+RUN apk add --no-cache curl
+
 LABEL org.opencontainers.image.source=https://github.com/ghoshRitesh12/aniwatch-api
 LABEL org.opencontainers.image.description="Node.js API for obtaining anime information from aniwatch.to (formerly zoro.to) written in TypeScript, made with Cheerio & Axios"
-LABEL org.opencontainers.image.description "Node.js API for obtaining anime information from aniwatch.to (formerly zoro.to) written in TypeScript, made with Cheerio & Axios"
 LABEL org.opencontainers.image.licenses=MIT
 
 # create a non-privileged user
@@ -54,5 +59,3 @@ ENV PORT=4000
 EXPOSE 4000
 
 CMD [ "node", "dist/src/server.js" ]
-
-# exit
